@@ -1,14 +1,92 @@
-version: "3.8"
+version: '3.8'
 
 services:
-  gpt-model:
-    image: ai/gpt-oss:latest
-    container_name: gpt-oss
+  # Main DomisLink Application
+  domislink-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "5000:5000"
+      - "3000:3000"
     environment:
-      - MODEL_NAME=gpt-oss-20b
-      - TRANSFORMERS_CACHE=/models
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:password@domislink-db:5432/domislink
+      - REDIS_URL=redis://domislink-redis:6379
+      - AI_PROCTORING_SERVICE=http://ai-proctoring:5001
+    depends_on:
+      - domislink-db
+      - domislink-redis
+      - ai-proctoring
     volumes:
-      - ./models:/models
-    restart: unless-stopped
+      - ./src:/app/src
+      - ./public:/app/public
+    networks:
+      - domislink-network
+
+  # PostgreSQL Database
+  domislink-db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=domislink
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - domislink-network
+
+  # Redis for Caching and Sessions
+  domislink-redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - domislink-network
+
+  # AI Proctoring Service
+  ai-proctoring:
+    build:
+      context: ./ai-proctoring-service
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:password@domislink-db:5432/domislink
+      - REDIS_URL=redis://domislink-redis:6379
+    volumes:
+      - ./ai-proctoring-service:/app
+      - ai_models:/app/models
+    networks:
+      - domislink-network
+
+  # Monitoring Dashboard
+  monitoring-dashboard:
+    build:
+      context: ./monitoring-dashboard
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:password@domislink-db:5432/domislink
+      - REDIS_URL=redis://domislink-redis:6379
+    depends_on:
+      - domislink-db
+      - domislink-redis
+    networks:
+      - domislink-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  ai_models:
+
+networks:
+  domislink-network:
+    driver: bridge
