@@ -1,29 +1,29 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "framework": "vite",
   "builds": [
     {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+      "src": "api/app.py",
+      "use": "@vercel/python"
     },
     {
-      "src": "frontend/backend/app.py",
-      "use": "@vercel/python"
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "frontend/dist"
+      }
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "frontend/backend/app.py"
+      "dest": "api/app.py"
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/$1"
+      "dest": "frontend/dist/$1"
     }
-  ]
+  ],
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/dist",
+  "framework": "vite"
 }
