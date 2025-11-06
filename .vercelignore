@@ -1,0 +1,6 @@
+.vs/
+*.slnx
+node_modules/
+venv/
+*.pyc
+__pycache__/
