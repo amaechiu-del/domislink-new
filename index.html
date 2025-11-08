@@ -3,22 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Web Creator</title>
-    <link href="main.css" rel="stylesheet" />
+    <title>Domislink International Business Services Ltd</title>
+    <meta name="description" content="Official website of Domislink International Business Services Ltd — Smart digital, business, and AI solutions for modern enterprises." />
+    <!-- ✅ Link to Tailwind CSS -->
+    <link rel="stylesheet" href="/src/main.css" />
   </head>
+
   <body>
     <div id="app"></div>
 
-    <!-- For Vite HMR in development -->
+    <!-- ✅ Development Hot Reload (Vite) -->
     <script>
-      if (import.meta.env.DEV) {
-        new EventSource('/esbuild').addEventListener('change', () =>
-          location.reload()
-        );
+      if (import.meta.env && import.meta.env.DEV) {
+        new EventSource('/esbuild').addEventListener('change', () => location.reload());
       }
     </script>
 
-    <!-- Main JS bundle -->
-    <script type="module" src="/main.js"></script>
+    <!-- ✅ Main JavaScript entry -->
+    <script type="module" src="/src/main.js"></script>
   </body>
 </html>

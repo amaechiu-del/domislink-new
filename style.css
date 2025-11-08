@@ -1,0 +1,15 @@
+/* style.css */
+body {
+  margin: 0;
+  padding: 0;
+  background: #f8f9fa;
+}
+
+h1 {
+  color: #2c3e50;
+  letter-spacing: 1px;
+}
+
+button:hover {
+  background: #005fd1;
+}

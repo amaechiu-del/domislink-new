@@ -1,23 +1,11 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",   // scans all JS/TS/React files
+    "./src/**/*.{js,ts,jsx,tsx,html}"
   ],
   theme: {
-    extend: {
-      colors: {
-        primary: "#1E40AF",   // customize your theme colors if you want
-        secondary: "#9333EA",
-      },
-      fontFamily: {
-        sans: ["Inter", "sans-serif"],
-      },
-    },
+    extend: {},
   },
-  plugins: [
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/typography"),
-    require("@tailwindcss/aspect-ratio"),
-  ],
+  plugins: [],
 }
