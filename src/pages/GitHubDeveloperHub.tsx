@@ -3,7 +3,6 @@
  * Central location for GitHub-related development tools and PR management
  */
 
-import { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import GitHubPRDashboard from '../components/Admin/GitHubPRDashboard';
