@@ -17,6 +17,7 @@ dist-ssr
 build/
 .next/
 out/
+*.tsbuildinfo
 
 # Environment files
 .env
