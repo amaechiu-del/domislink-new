@@ -40,12 +40,26 @@ class DomisLinkLLMEngine {
 
   /**
    * Initialize multiple LLM providers with intelligent routing
+   * SECURITY NOTE: API keys should be set in environment variables (.env file)
+   * Never commit actual API keys to version control
    */
   private initializeProviders() {
+    // Validate that API keys are set in environment
+    const missingKeys: string[] = [];
+    if (!process.env.HUGGINGFACE_API_KEY) missingKeys.push('HUGGINGFACE_API_KEY');
+    if (!process.env.COHERE_API_KEY) missingKeys.push('COHERE_API_KEY');
+    if (!process.env.OPENAI_API_KEY) missingKeys.push('OPENAI_API_KEY');
+    
+    if (missingKeys.length > 0) {
+      console.warn('⚠️  Missing API keys in environment:', missingKeys.join(', '));
+      console.warn('⚠️  Set these in your .env file. See .env.example for reference.');
+    }
+
     this.providers = [
       {
         name: 'HuggingFace',
         endpoint: 'https://api-inference.huggingface.co/models/microsoft/DialoGPT-large',
+        // SECURITY: API key loaded from environment variable
         apiKey: process.env.HUGGINGFACE_API_KEY || 'hf_your_free_api_key_here',
         costPerToken: 0,
         maxTokens: 1000,
@@ -55,6 +69,7 @@ class DomisLinkLLMEngine {
       {
         name: 'Cohere',
         endpoint: 'https://api.cohere.ai/v1/generate',
+        // SECURITY: API key loaded from environment variable
         apiKey: process.env.COHERE_API_KEY || 'cohere_free_tier_key',
         costPerToken: 0.0004,
         maxTokens: 2048,
@@ -64,6 +79,7 @@ class DomisLinkLLMEngine {
       {
         name: 'OpenAI-Compatible',
         endpoint: 'https://api.openai.com/v1/chat/completions',
+        // SECURITY: API key loaded from environment variable
         apiKey: process.env.OPENAI_API_KEY || 'sk-your-openai-key',
         costPerToken: 0.002,
         maxTokens: 4096,

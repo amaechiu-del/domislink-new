@@ -10,8 +10,9 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=postgresql://postgres:password@domislink-db:5432/domislink
-      - REDIS_URL=redis://domislink-redis:6379
+      # SECURITY: Use environment variables from .env file in production
+      - DATABASE_URL=${DATABASE_URL:-postgresql://postgres:password@domislink-db:5432/domislink}
+      - REDIS_URL=${REDIS_URL:-redis://domislink-redis:6379}
       - AI_PROCTORING_SERVICE=http://ai-proctoring:5001
     depends_on:
       - domislink-db
@@ -27,9 +28,10 @@ services:
   domislink-db:
     image: postgres:15
     environment:
-      - POSTGRES_DB=domislink
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=${POSTGRES_DB:-domislink}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      # SECURITY: Change default password in production using .env file
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
     ports:
       - "5432:5432"
     volumes:
@@ -57,8 +59,8 @@ services:
       - "5001:5001"
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=postgresql://postgres:password@domislink-db:5432/domislink
-      - REDIS_URL=redis://domislink-redis:6379
+      - DATABASE_URL=${DATABASE_URL:-postgresql://postgres:password@domislink-db:5432/domislink}
+      - REDIS_URL=${REDIS_URL:-redis://domislink-redis:6379}
     volumes:
       - ./ai-proctoring-service:/app
       - ai_models:/app/models
@@ -74,8 +76,8 @@ services:
       - "3001:3001"
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=postgresql://postgres:password@domislink-db:5432/domislink
-      - REDIS_URL=redis://domislink-redis:6379
+      - DATABASE_URL=${DATABASE_URL:-postgresql://postgres:password@domislink-db:5432/domislink}
+      - REDIS_URL=${REDIS_URL:-redis://domislink-redis:6379}
     depends_on:
       - domislink-db
       - domislink-redis
