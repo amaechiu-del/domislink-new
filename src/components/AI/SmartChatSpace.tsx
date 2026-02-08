@@ -2,7 +2,7 @@
  * Smart Chat Space - AI-Powered Chat with Memory and Personalization
  * Remembers user names and provides personalized assistance
  */
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Badge } from '../ui/badge'
@@ -71,7 +71,7 @@ export default function SmartChatSpace({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const addAIMessage = (content: string) => {
+  const addAIMessage = useCallback((content: string) => {
     const newMessage: Message = {
       id: Date.now().toString(),
       content,
@@ -79,7 +79,7 @@ export default function SmartChatSpace({
       timestamp: new Date(),
     }
     setMessages((prev) => [...prev, newMessage])
-  }
+  }, [])
 
   useEffect(() => {
     // Check if user is logged in and has a name
