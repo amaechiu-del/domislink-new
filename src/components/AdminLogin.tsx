@@ -2,40 +2,46 @@
  * Admin Login Component for DomisLink Aviation Academy
  * Secure authentication for platform administrators
  */
-import { useState } from 'react';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Shield, Lock, Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react'
+import { Button } from './ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from './ui/card'
+import { Input } from './ui/input'
+import { Label } from './ui/label'
+import { Shield, Lock, Eye, EyeOff } from 'lucide-react'
 
 interface AdminLoginProps {
-  onLogin: (isAuthenticated: boolean) => void;
+  onLogin: (isAuthenticated: boolean) => void
 }
 
 export default function AdminLogin({ onLogin }: AdminLoginProps) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
+    e.preventDefault()
+    setIsLoading(true)
+    setError('')
 
     // Simple authentication (in real app, this would call an API)
     setTimeout(() => {
       if (username === 'admin' && password === 'domislink2024') {
-        localStorage.setItem('adminAuthenticated', 'true');
-        onLogin(true);
+        localStorage.setItem('adminAuthenticated', 'true')
+        onLogin(true)
       } else {
-        setError('Invalid credentials. Please try again.');
+        setError('Invalid credentials. Please try again.')
       }
-      setIsLoading(false);
-    }, 1000);
-  };
+      setIsLoading(false)
+    }, 1000)
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center p-4">
@@ -65,7 +71,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
                 className="border-gray-300 focus:border-blue-500"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="password" className="text-sm font-medium">
                 Password
@@ -85,7 +91,11 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </button>
               </div>
             </div>
@@ -117,13 +127,15 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
 
           <div className="mt-6 p-4 bg-blue-50 rounded-md border border-blue-200">
             <p className="text-sm text-blue-700 text-center">
-              <strong>Demo Credentials:</strong><br />
-              Username: admin<br />
+              <strong>Demo Credentials:</strong>
+              <br />
+              Username: admin
+              <br />
               Password: domislink2024
             </p>
           </div>
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

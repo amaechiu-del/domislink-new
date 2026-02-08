@@ -3,52 +3,60 @@
  * Allows CEO to create and deploy complete website designs with natural language
  */
 
-import { useState, useRef } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { Button } from '../ui/button';
-import { Textarea } from '../ui/textarea';
-import { Badge } from '../ui/badge';
-import { 
-  Palette, 
-  Layout, 
-  Type, 
+import { useState, useRef } from 'react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../ui/card'
+import { Button } from '../ui/button'
+import { Textarea } from '../ui/textarea'
+import { Badge } from '../ui/badge'
+import {
+  Palette,
+  Layout,
+  Type,
   Image,
   Code,
   Eye,
   Download,
   Sparkles,
   Zap,
-  Copy
-} from 'lucide-react';
+  Copy,
+} from 'lucide-react'
 
 interface DesignTemplate {
-  id: string;
-  name: string;
-  category: string;
-  description: string;
-  preview: string;
-  code: string;
-  colors: string[];
-  components: string[];
+  id: string
+  name: string
+  category: string
+  description: string
+  preview: string
+  code: string
+  colors: string[]
+  components: string[]
 }
 
 interface DesignProject {
-  id: string;
-  name: string;
-  description: string;
-  prompt: string;
-  generatedDesign: string;
-  status: 'draft' | 'generating' | 'ready' | 'deployed';
-  timestamp: string;
-  components: string[];
+  id: string
+  name: string
+  description: string
+  prompt: string
+  generatedDesign: string
+  status: 'draft' | 'generating' | 'ready' | 'deployed'
+  timestamp: string
+  components: string[]
 }
 
 export default function WebsiteDesignStudio() {
-  const [designPrompt, setDesignPrompt] = useState('');
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [currentProject, setCurrentProject] = useState<DesignProject | null>(null);
-  const [designTemplates, setDesignTemplates] = useState<DesignTemplate[]>([]);
-  const [projects, setProjects] = useState<DesignProject[]>([]);
+  const [designPrompt, setDesignPrompt] = useState('')
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [currentProject, setCurrentProject] = useState<DesignProject | null>(
+    null
+  )
+  const [designTemplates, setDesignTemplates] = useState<DesignTemplate[]>([])
+  const [projects, setProjects] = useState<DesignProject[]>([])
 
   // Pre-defined design templates
   const predefinedTemplates: DesignTemplate[] = [
@@ -57,7 +65,8 @@ export default function WebsiteDesignStudio() {
       name: 'Corporate Modern',
       category: 'Business',
       description: 'Professional corporate design with modern aesthetics',
-      preview: 'https://pub-cdn.sider.ai/u/U0Y3HG1OZK0/web-coder/69088bf961d18d65760b5c96/resource/9ab4b9ee-440f-4598-a2f8-5eea185299b0.jpg',
+      preview:
+        'https://pub-cdn.sider.ai/u/U0Y3HG1OZK0/web-coder/69088bf961d18d65760b5c96/resource/9ab4b9ee-440f-4598-a2f8-5eea185299b0.jpg',
       code: `// Corporate Modern Design System
 export const corporateModern = {
   colors: {
@@ -74,14 +83,15 @@ export const corporateModern = {
   components: ['Navigation', 'Hero', 'Features', 'Testimonials', 'Footer']
 };`,
       colors: ['#2563eb', '#64748b', '#f59e0b', '#f8fafc'],
-      components: ['Navigation', 'Hero', 'Features', 'Testimonials', 'Footer']
+      components: ['Navigation', 'Hero', 'Features', 'Testimonials', 'Footer'],
     },
     {
       id: 'aviation-premium',
       name: 'Aviation Premium',
       category: 'Aviation',
       description: 'Premium aviation industry design with flight aesthetics',
-      preview: 'https://pub-cdn.sider.ai/u/U0Y3HG1OZK0/web-coder/69088bf961d18d65760b5c96/resource/48260531-0610-48e8-9ff7-bf68c5657cba.jpg',
+      preview:
+        'https://pub-cdn.sider.ai/u/U0Y3HG1OZK0/web-coder/69088bf961d18d65760b5c96/resource/48260531-0610-48e8-9ff7-bf68c5657cba.jpg',
       code: `// Aviation Premium Design System
 export const aviationPremium = {
   colors: {
@@ -98,14 +108,21 @@ export const aviationPremium = {
   components: ['Flight Navigation', 'Hero Banner', 'Services', 'Fleet', 'Booking']
 };`,
       colors: ['#0ea5e9', '#1e40af', '#fbbf24', '#0f172a'],
-      components: ['Flight Navigation', 'Hero Banner', 'Services', 'Fleet', 'Booking']
+      components: [
+        'Flight Navigation',
+        'Hero Banner',
+        'Services',
+        'Fleet',
+        'Booking',
+      ],
     },
     {
       id: 'real-estate-luxury',
       name: 'Real Estate Luxury',
       category: 'Real Estate',
       description: 'Luxury real estate design with premium property showcase',
-      preview: 'https://pub-cdn.sider.ai/u/U0Y3HG1OZK0/web-coder/69088bf961d18d65760b5c96/resource/8126a041-f49e-4888-a3b3-9d0887fe170e.jpg',
+      preview:
+        'https://pub-cdn.sider.ai/u/U0Y3HG1OZK0/web-coder/69088bf961d18d65760b5c96/resource/8126a041-f49e-4888-a3b3-9d0887fe170e.jpg',
       code: `// Real Estate Luxury Design System
 export const realEstateLuxury = {
   colors: {
@@ -122,16 +139,16 @@ export const realEstateLuxury = {
   components: ['Property Search', 'Gallery', 'Details', 'Map', 'Contact']
 };`,
       colors: ['#dc2626', '#57534e', '#d97706', '#fef7ed'],
-      components: ['Property Search', 'Gallery', 'Details', 'Map', 'Contact']
-    }
-  ];
+      components: ['Property Search', 'Gallery', 'Details', 'Map', 'Contact'],
+    },
+  ]
 
   const handleGenerateDesign = async () => {
-    if (!designPrompt.trim()) return;
+    if (!designPrompt.trim()) return
 
-    setIsGenerating(true);
-    
-    const projectId = `design-${Date.now()}`;
+    setIsGenerating(true)
+
+    const projectId = `design-${Date.now()}`
     const newProject: DesignProject = {
       id: projectId,
       name: `Design-${projects.length + 1}`,
@@ -140,51 +157,64 @@ export const realEstateLuxury = {
       generatedDesign: '',
       status: 'generating',
       timestamp: new Date().toISOString(),
-      components: []
-    };
+      components: [],
+    }
 
-    setCurrentProject(newProject);
-    setProjects(prev => [newProject, ...prev]);
+    setCurrentProject(newProject)
+    setProjects((prev) => [newProject, ...prev])
 
     // Simulate AI design generation
-    await simulateDesignGeneration(newProject);
-    
-    setIsGenerating(false);
-    setDesignPrompt('');
-  };
+    await simulateDesignGeneration(newProject)
+
+    setIsGenerating(false)
+    setDesignPrompt('')
+  }
 
   const simulateDesignGeneration = async (project: DesignProject) => {
     // Analyze prompt to select appropriate template
-    const selectedTemplate = selectTemplateForPrompt(project.prompt);
-    
+    const selectedTemplate = selectTemplateForPrompt(project.prompt)
+
     // Generate custom design based on template and prompt
-    const customDesign = generateCustomDesign(selectedTemplate, project.prompt);
-    
+    const customDesign = generateCustomDesign(selectedTemplate, project.prompt)
+
     const updatedProject: DesignProject = {
       ...project,
       generatedDesign: customDesign,
       components: selectedTemplate.components,
-      status: 'ready'
-    };
+      status: 'ready',
+    }
 
-    setCurrentProject(updatedProject);
-    setProjects(prev => prev.map(p => p.id === project.id ? updatedProject : p));
-  };
+    setCurrentProject(updatedProject)
+    setProjects((prev) =>
+      prev.map((p) => (p.id === project.id ? updatedProject : p))
+    )
+  }
 
   const selectTemplateForPrompt = (prompt: string): DesignTemplate => {
-    const promptLower = prompt.toLowerCase();
-    
-    if (promptLower.includes('aviation') || promptLower.includes('flight') || promptLower.includes('pilot')) {
-      return predefinedTemplates.find(t => t.id === 'aviation-premium')!;
-    }
-    if (promptLower.includes('real estate') || promptLower.includes('property') || promptLower.includes('house')) {
-      return predefinedTemplates.find(t => t.id === 'real-estate-luxury')!;
-    }
-    
-    return predefinedTemplates.find(t => t.id === 'corporate-modern')!;
-  };
+    const promptLower = prompt.toLowerCase()
 
-  const generateCustomDesign = (template: DesignTemplate, prompt: string): string => {
+    if (
+      promptLower.includes('aviation') ||
+      promptLower.includes('flight') ||
+      promptLower.includes('pilot')
+    ) {
+      return predefinedTemplates.find((t) => t.id === 'aviation-premium')!
+    }
+    if (
+      promptLower.includes('real estate') ||
+      promptLower.includes('property') ||
+      promptLower.includes('house')
+    ) {
+      return predefinedTemplates.find((t) => t.id === 'real-estate-luxury')!
+    }
+
+    return predefinedTemplates.find((t) => t.id === 'corporate-modern')!
+  }
+
+  const generateCustomDesign = (
+    template: DesignTemplate,
+    prompt: string
+  ): string => {
     return `/**
  * AI-Generated Design System for DomisLink
  * CEO Design Directive: "${prompt}"
@@ -235,34 +265,36 @@ export const domisLinkDesign = {
  * CEO Design Successfully Generated!
  * Ready for immediate implementation across DomisLink platforms.
  */
-`;
-  };
+`
+  }
 
   const handleDeployDesign = (projectId: string) => {
-    const project = projects.find(p => p.id === projectId);
+    const project = projects.find((p) => p.id === projectId)
     if (project) {
-      setProjects(prev => prev.map(p => 
-        p.id === projectId ? { ...p, status: 'deployed' } : p
-      ));
-      
+      setProjects((prev) =>
+        prev.map((p) => (p.id === projectId ? { ...p, status: 'deployed' } : p))
+      )
+
       // Update global deployment status
       const status = {
         active: true,
         message: `Design System Deployed: ${project.name}`,
         progress: 100,
-        timestamp: new Date().toISOString()
-      };
-      localStorage.setItem('deployment_status', JSON.stringify(status));
-      window.dispatchEvent(new CustomEvent('deploymentStatusUpdate', { detail: status }));
-      
-      alert(`🎨 Design System "${project.name}" deployed successfully!`);
+        timestamp: new Date().toISOString(),
+      }
+      localStorage.setItem('deployment_status', JSON.stringify(status))
+      window.dispatchEvent(
+        new CustomEvent('deploymentStatusUpdate', { detail: status })
+      )
+
+      alert(`🎨 Design System "${project.name}" deployed successfully!`)
     }
-  };
+  }
 
   const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    alert('Design code copied to clipboard!');
-  };
+    navigator.clipboard.writeText(text)
+    alert('Design code copied to clipboard!')
+  }
 
   return (
     <div className="space-y-6">
@@ -274,7 +306,8 @@ export const domisLinkDesign = {
             AI Website Design Studio
           </CardTitle>
           <CardDescription>
-            Create complete website designs using natural language. AI generates production-ready design systems.
+            Create complete website designs using natural language. AI generates
+            production-ready design systems.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -291,12 +324,19 @@ export const domisLinkDesign = {
                 className="w-full"
               />
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {predefinedTemplates.map((template) => (
-                <div key={template.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
-                  <div className="font-medium text-sm mb-2">{template.name}</div>
-                  <div className="text-xs text-gray-600 mb-3">{template.description}</div>
+                <div
+                  key={template.id}
+                  className="border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+                >
+                  <div className="font-medium text-sm mb-2">
+                    {template.name}
+                  </div>
+                  <div className="text-xs text-gray-600 mb-3">
+                    {template.description}
+                  </div>
                   <div className="flex space-x-1 mb-3">
                     {template.colors.map((color, index) => (
                       <div
@@ -352,12 +392,16 @@ export const domisLinkDesign = {
               <div className="flex justify-between items-center">
                 <div>
                   <div className="font-medium">{currentProject.name}</div>
-                  <div className="text-sm text-gray-600">{currentProject.description}</div>
+                  <div className="text-sm text-gray-600">
+                    {currentProject.description}
+                  </div>
                 </div>
                 <div className="flex space-x-2">
                   <Button
                     size="sm"
-                    onClick={() => copyToClipboard(currentProject.generatedDesign)}
+                    onClick={() =>
+                      copyToClipboard(currentProject.generatedDesign)
+                    }
                   >
                     <Copy className="h-4 w-4 mr-2" />
                     Copy Code
@@ -371,14 +415,16 @@ export const domisLinkDesign = {
                   </Button>
                 </div>
               </div>
-              
+
               <div className="bg-gray-900 text-green-400 font-mono text-xs p-4 rounded-lg max-h-64 overflow-y-auto">
                 <pre>{currentProject.generatedDesign}</pre>
               </div>
-              
+
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                 <div className="p-3 bg-blue-50 rounded-lg">
-                  <div className="font-bold text-blue-600">{currentProject.components.length}</div>
+                  <div className="font-bold text-blue-600">
+                    {currentProject.components.length}
+                  </div>
                   <div className="text-xs text-blue-500">Components</div>
                 </div>
                 <div className="p-3 bg-green-50 rounded-lg">
@@ -410,25 +456,41 @@ export const domisLinkDesign = {
         <CardContent>
           <div className="space-y-3">
             {projects.slice(0, 5).map((project) => (
-              <div key={project.id} className="flex items-center justify-between p-3 border rounded-lg">
+              <div
+                key={project.id}
+                className="flex items-center justify-between p-3 border rounded-lg"
+              >
                 <div className="flex-1">
                   <div className="font-medium text-sm">{project.name}</div>
-                  <div className="text-xs text-gray-600 mt-1">{project.description}</div>
+                  <div className="text-xs text-gray-600 mt-1">
+                    {project.description}
+                  </div>
                   <div className="flex items-center space-x-2 mt-2">
                     {project.components.slice(0, 3).map((component, index) => (
-                      <Badge key={index} variant="outline" className="bg-transparent text-xs">
+                      <Badge
+                        key={index}
+                        variant="outline"
+                        className="bg-transparent text-xs"
+                      >
                         {component}
                       </Badge>
                     ))}
                     {project.components.length > 3 && (
-                      <Badge variant="outline" className="bg-transparent text-xs">
+                      <Badge
+                        variant="outline"
+                        className="bg-transparent text-xs"
+                      >
                         +{project.components.length - 3} more
                       </Badge>
                     )}
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Badge variant={project.status === 'deployed' ? 'default' : 'secondary'}>
+                  <Badge
+                    variant={
+                      project.status === 'deployed' ? 'default' : 'secondary'
+                    }
+                  >
                     {project.status}
                   </Badge>
                   <Button
@@ -442,17 +504,19 @@ export const domisLinkDesign = {
                 </div>
               </div>
             ))}
-            
+
             {projects.length === 0 && (
               <div className="text-center py-8 text-gray-500">
                 <Palette className="h-12 w-12 mx-auto mb-3 opacity-50" />
                 <p>No design projects yet</p>
-                <p className="text-sm">Describe your website design to get started</p>
+                <p className="text-sm">
+                  Describe your website design to get started
+                </p>
               </div>
             )}
           </div>
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

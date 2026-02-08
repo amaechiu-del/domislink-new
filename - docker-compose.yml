@@ -3,7 +3,7 @@ services:
   gpt-model:
     image: ai/gpt-oss:latest
     ports:
-      - "5000:5000"
+      - '5000:5000'
 
   tutor-agent:
     image: ghcr.io/langchain/langchain:latest
@@ -12,7 +12,7 @@ services:
     depends_on:
       - gpt-model
     ports:
-      - "8000:8000"
+      - '8000:8000'
 
   grading-agent:
     image: ghcr.io/crewai/crewai:latest
@@ -21,7 +21,7 @@ services:
     depends_on:
       - gpt-model
     ports:
-      - "8001:8001"
+      - '8001:8001'
 
   dashboard:
     image: node:18
@@ -30,4 +30,4 @@ services:
     working_dir: /app
     command: npm start
     ports:
-      - "3000:3000"
+      - '3000:3000'

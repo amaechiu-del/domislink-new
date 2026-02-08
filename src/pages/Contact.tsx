@@ -2,24 +2,30 @@
  * Contact Page for DomisLink Aviation Academy
  * Inquiry form and contact information for prospective students
  */
-import { Link } from 'react-router';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import { Textarea } from '../components/ui/textarea';
-import { 
-  Plane, 
-  Mail, 
-  Phone, 
-  MapPin, 
+import { Link } from 'react-router'
+import { Button } from '../components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../components/ui/card'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { Textarea } from '../components/ui/textarea'
+import {
+  Plane,
+  Mail,
+  Phone,
+  MapPin,
   Clock,
   Send,
   User,
   BookOpen,
-  MessageCircle
-} from 'lucide-react';
-import { useState } from 'react';
+  MessageCircle,
+} from 'lucide-react'
+import { useState } from 'react'
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -29,11 +35,11 @@ export default function Contact() {
     phone: '',
     courseInterest: '',
     message: '',
-    preferredContact: 'email'
-  });
+    preferredContact: 'email',
+  })
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const courses = [
     'Airline Transport Pilot License (ATPL)',
@@ -41,25 +47,29 @@ export default function Contact() {
     'Private Pilot License (PPL)',
     'Aircraft Type Ratings',
     'General Information',
-    'Platform Features'
-  ];
+    'Platform Features',
+  ]
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }));
-  };
+      [name]: value,
+    }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
+    e.preventDefault()
+    setIsSubmitting(true)
+
     // Simulate form submission
     setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
+      setIsSubmitting(false)
+      setIsSubmitted(true)
       setFormData({
         firstName: '',
         lastName: '',
@@ -67,37 +77,37 @@ export default function Contact() {
         phone: '',
         courseInterest: '',
         message: '',
-        preferredContact: 'email'
-      });
-    }, 2000);
-  };
+        preferredContact: 'email',
+      })
+    }, 2000)
+  }
 
   const contactInfo = [
     {
       icon: <Mail className="h-6 w-6" />,
-      title: "Email Us",
-      details: "admissions@domislink.academy",
-      description: "Send us your questions anytime"
+      title: 'Email Us',
+      details: 'admissions@domislink.academy',
+      description: 'Send us your questions anytime',
     },
     {
       icon: <Phone className="h-6 w-6" />,
-      title: "Call Us",
-      details: "+1 (555) 123-4567",
-      description: "Mon-Fri from 8am to 6pm"
+      title: 'Call Us',
+      details: '+1 (555) 123-4567',
+      description: 'Mon-Fri from 8am to 6pm',
     },
     {
       icon: <MapPin className="h-6 w-6" />,
-      title: "Global Support",
-      details: "100% Online Platform",
-      description: "Available worldwide 24/7"
+      title: 'Global Support',
+      details: '100% Online Platform',
+      description: 'Available worldwide 24/7',
     },
     {
       icon: <Clock className="h-6 w-6" />,
-      title: "Response Time",
-      details: "Within 24 hours",
-      description: "Quick and detailed responses"
-    }
-  ];
+      title: 'Response Time',
+      details: 'Within 24 hours',
+      description: 'Quick and detailed responses',
+    },
+  ]
 
   if (isSubmitted) {
     return (
@@ -114,7 +124,8 @@ export default function Contact() {
           </CardHeader>
           <CardContent className="text-center space-y-4">
             <p className="text-gray-600">
-              We've received your information request and our admissions team will contact you within 24 hours.
+              We've received your information request and our admissions team
+              will contact you within 24 hours.
             </p>
             <div className="space-y-2">
               <p className="text-sm text-gray-500">
@@ -128,14 +139,17 @@ export default function Contact() {
               </ul>
             </div>
             <div className="flex flex-col gap-2 pt-4">
-              <Button 
+              <Button
                 onClick={() => setIsSubmitted(false)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 Submit Another Inquiry
               </Button>
               <Link to="/">
-                <Button variant="outline" className="bg-transparent w-full border-blue-600 text-blue-600 hover:bg-blue-50">
+                <Button
+                  variant="outline"
+                  className="bg-transparent w-full border-blue-600 text-blue-600 hover:bg-blue-50"
+                >
                   Return to Home
                 </Button>
               </Link>
@@ -143,7 +157,7 @@ export default function Contact() {
           </CardContent>
         </Card>
       </div>
-    );
+    )
   }
 
   return (
@@ -154,13 +168,32 @@ export default function Contact() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Plane className="h-8 w-8 text-blue-600" />
-              <span className="text-2xl font-bold text-gray-800">DomisLink Aviation Academy</span>
+              <span className="text-2xl font-bold text-gray-800">
+                DomisLink Aviation Academy
+              </span>
             </div>
             <div className="hidden md:flex space-x-6">
-              <Link to="/" className="text-gray-600 hover:text-blue-600">Home</Link>
-              <Link to="/general-aviation" className="text-gray-600 hover:text-blue-600">General Aviation Courses</Link>
-              <Link to="/type-ratings" className="text-gray-600 hover:text-blue-600">Type Ratings</Link>
-              <Link to="/contact" className="text-blue-600 font-medium hover:text-blue-800">Contact</Link>
+              <Link to="/" className="text-gray-600 hover:text-blue-600">
+                Home
+              </Link>
+              <Link
+                to="/general-aviation"
+                className="text-gray-600 hover:text-blue-600"
+              >
+                General Aviation Courses
+              </Link>
+              <Link
+                to="/type-ratings"
+                className="text-gray-600 hover:text-blue-600"
+              >
+                Type Ratings
+              </Link>
+              <Link
+                to="/contact"
+                className="text-blue-600 font-medium hover:text-blue-800"
+              >
+                Contact
+              </Link>
             </div>
             <Button className="bg-blue-600 hover:bg-blue-700">
               Enroll Now
@@ -175,7 +208,8 @@ export default function Contact() {
           Request <span className="text-blue-600">More Information</span>
         </h1>
         <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-          Get detailed course information, platform demo access, and personalized guidance from our aviation experts.
+          Get detailed course information, platform demo access, and
+          personalized guidance from our aviation experts.
         </p>
       </section>
 
@@ -187,7 +221,8 @@ export default function Contact() {
               <CardHeader>
                 <CardTitle className="text-2xl">Get in Touch</CardTitle>
                 <CardDescription>
-                  Our admissions team is ready to help you start your aviation journey
+                  Our admissions team is ready to help you start your aviation
+                  journey
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -197,9 +232,15 @@ export default function Contact() {
                       {info.icon}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">{info.title}</h3>
-                      <p className="text-gray-900 font-medium">{info.details}</p>
-                      <p className="text-gray-600 text-sm">{info.description}</p>
+                      <h3 className="font-semibold text-gray-900">
+                        {info.title}
+                      </h3>
+                      <p className="text-gray-900 font-medium">
+                        {info.details}
+                      </p>
+                      <p className="text-gray-600 text-sm">
+                        {info.description}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -245,7 +286,8 @@ export default function Contact() {
                   Course Information Request
                 </CardTitle>
                 <CardDescription>
-                  Fill out this form and our team will contact you with detailed information about our programs.
+                  Fill out this form and our team will contact you with detailed
+                  information about our programs.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -313,13 +355,17 @@ export default function Contact() {
                     >
                       <option value="">Select a course...</option>
                       {courses.map((course, index) => (
-                        <option key={index} value={course}>{course}</option>
+                        <option key={index} value={course}>
+                          {course}
+                        </option>
                       ))}
                     </select>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="preferredContact">Preferred Contact Method</Label>
+                    <Label htmlFor="preferredContact">
+                      Preferred Contact Method
+                    </Label>
                     <div className="flex space-x-4">
                       <label className="flex items-center space-x-2">
                         <input
@@ -358,8 +404,8 @@ export default function Contact() {
                     />
                   </div>
 
-                  <Button 
-                    type="submit" 
+                  <Button
+                    type="submit"
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3"
                     disabled={isSubmitting}
                   >
@@ -377,7 +423,8 @@ export default function Contact() {
                   </Button>
 
                   <p className="text-sm text-gray-500 text-center">
-                    By submitting this form, you agree to our privacy policy and consent to being contacted by DomisLink Aviation Academy.
+                    By submitting this form, you agree to our privacy policy and
+                    consent to being contacted by DomisLink Aviation Academy.
                   </p>
                 </form>
               </CardContent>
@@ -393,7 +440,9 @@ export default function Contact() {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <Plane className="h-6 w-6 text-blue-400" />
-                <span className="text-xl font-bold">DomisLink Aviation Academy</span>
+                <span className="text-xl font-bold">
+                  DomisLink Aviation Academy
+                </span>
               </div>
               <p className="text-gray-400">
                 100% Online AI-Aided Aviation Training Platform
@@ -402,17 +451,41 @@ export default function Contact() {
             <div>
               <h3 className="font-semibold mb-4">Courses</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><Link to="/general-aviation" className="hover:text-white">General Aviation</Link></li>
-                <li><Link to="/type-ratings" className="hover:text-white">Type Ratings</Link></li>
-                <li><Link to="/platform" className="hover:text-white">Platform Features</Link></li>
+                <li>
+                  <Link to="/general-aviation" className="hover:text-white">
+                    General Aviation
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/type-ratings" className="hover:text-white">
+                    Type Ratings
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/platform" className="hover:text-white">
+                    Platform Features
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Resources</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><Link to="/course-catalog" className="hover:text-white">Course Catalog</Link></li>
-                <li><Link to="/faq" className="hover:text-white">FAQ</Link></li>
-                <li><Link to="/blog" className="hover:text-white">Blog</Link></li>
+                <li>
+                  <Link to="/course-catalog" className="hover:text-white">
+                    Course Catalog
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/faq" className="hover:text-white">
+                    FAQ
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/blog" className="hover:text-white">
+                    Blog
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
@@ -425,10 +498,12 @@ export default function Contact() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>© 2024 DomisLink Aviation Academy. 100% Online Digital Platform.</p>
+            <p>
+              © 2024 DomisLink Aviation Academy. 100% Online Digital Platform.
+            </p>
           </div>
         </div>
       </footer>
     </div>
-  );
+  )
 }

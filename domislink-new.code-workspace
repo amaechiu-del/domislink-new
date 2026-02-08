@@ -1,9 +1,9 @@
 {
-	"folders": [
-		{
-			"name": "domislink.com",
-			"path": "."
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "name": "domislink.com",
+      "path": ".",
+    },
+  ],
+  "settings": {},
 }

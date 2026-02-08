@@ -1,4 +1,4 @@
-const app = document.getElementById("app");
+const app = document.getElementById('app')
 
 app.innerHTML = `
   <header class="bg-blue-600 text-white p-6 text-center font-bold text-2xl">
@@ -18,4 +18,4 @@ app.innerHTML = `
   <footer class="bg-gray-200 p-4 text-center">
     &copy; ${new Date().getFullYear()} Domislink International Business Services Ltd
   </footer>
-`;
+`

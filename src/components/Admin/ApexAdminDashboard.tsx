@@ -2,17 +2,23 @@
  * Apex Admin Dashboard - Supreme Administrator with Full Control
  * Highest level administrator with complete system authority
  */
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { onDeploymentStatusUpdate } from '../../utils/deploymentStatus';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
-import { 
-  Crown, 
-  Users, 
-  DollarSign, 
-  Settings, 
-  Shield, 
+import { useState, useEffect } from 'react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../ui/card'
+import { onDeploymentStatusUpdate } from '../../utils/deploymentStatus'
+import { Button } from '../ui/button'
+import { Badge } from '../ui/badge'
+import {
+  Crown,
+  Users,
+  DollarSign,
+  Settings,
+  Shield,
   BarChart3,
   MessageSquare,
   UserCheck,
@@ -29,44 +35,48 @@ import {
   Terminal,
   Cpu,
   GitBranch,
-  CheckCircle
-} from 'lucide-react';
+  CheckCircle,
+} from 'lucide-react'
 
 interface SubAdmin {
-  id: string;
-  name: string;
-  email: string;
-  assignedPage: string;
-  status: 'active' | 'inactive' | 'pending';
-  permissions: string[];
-  recommendations: number;
-  lastActive: string;
+  id: string
+  name: string
+  email: string
+  assignedPage: string
+  status: 'active' | 'inactive' | 'pending'
+  permissions: string[]
+  recommendations: number
+  lastActive: string
 }
 
 interface RevenueRecord {
-  id: string;
-  amount: number;
-  source: string;
-  timestamp: string;
-  status: 'completed' | 'pending' | 'failed';
-  userEmail: string;
+  id: string
+  amount: number
+  source: string
+  timestamp: string
+  status: 'completed' | 'pending' | 'failed'
+  userEmail: string
 }
 
 export default function ApexAdminDashboard() {
-  const [subAdmins, setSubAdmins] = useState<SubAdmin[]>([]);
-  const [revenueRecords, setRevenueRecords] = useState<RevenueRecord[]>([]);
-  const [pendingRecommendations, setPendingRecommendations] = useState<any[]>([]);
-  const [selectedSubAdmin, setSelectedSubAdmin] = useState<SubAdmin | null>(null);
+  const [subAdmins, setSubAdmins] = useState<SubAdmin[]>([])
+  const [revenueRecords, setRevenueRecords] = useState<RevenueRecord[]>([])
+  const [pendingRecommendations, setPendingRecommendations] = useState<any[]>(
+    []
+  )
+  const [selectedSubAdmin, setSelectedSubAdmin] = useState<SubAdmin | null>(
+    null
+  )
   const [deploymentStatus, setDeploymentStatus] = useState<{
-    active: boolean;
-    message: string;
-    progress: number;
-    timestamp?: string;
+    active: boolean
+    message: string
+    progress: number
+    timestamp?: string
   }>({
     active: false,
     message: 'No active deployments',
-    progress: 0
-  });
+    progress: 0,
+  })
 
   useEffect(() => {
     // Mock data - in real app, this would come from API
@@ -79,7 +89,7 @@ export default function ApexAdminDashboard() {
         status: 'active',
         permissions: ['view_analytics', 'make_recommendations'],
         recommendations: 12,
-        lastActive: '2024-01-15T10:30:00Z'
+        lastActive: '2024-01-15T10:30:00Z',
       },
       {
         id: '2',
@@ -89,7 +99,7 @@ export default function ApexAdminDashboard() {
         status: 'active',
         permissions: ['view_analytics', 'make_recommendations'],
         recommendations: 8,
-        lastActive: '2024-01-15T09:15:00Z'
+        lastActive: '2024-01-15T09:15:00Z',
       },
       {
         id: '3',
@@ -99,9 +109,9 @@ export default function ApexAdminDashboard() {
         status: 'pending',
         permissions: ['view_analytics'],
         recommendations: 3,
-        lastActive: '2024-01-14T16:45:00Z'
-      }
-    ]);
+        lastActive: '2024-01-14T16:45:00Z',
+      },
+    ])
 
     setRevenueRecords([
       {
@@ -110,7 +120,7 @@ export default function ApexAdminDashboard() {
         source: 'University Course',
         timestamp: '2024-01-15T10:15:00Z',
         status: 'completed',
-        userEmail: 'student1@example.com'
+        userEmail: 'student1@example.com',
       },
       {
         id: 'rev2',
@@ -118,7 +128,7 @@ export default function ApexAdminDashboard() {
         source: 'Marketplace Purchase',
         timestamp: '2024-01-15T09:30:00Z',
         status: 'completed',
-        userEmail: 'customer@example.com'
+        userEmail: 'customer@example.com',
       },
       {
         id: 'rev3',
@@ -126,42 +136,42 @@ export default function ApexAdminDashboard() {
         source: 'Real Estate Subscription',
         timestamp: '2024-01-15T08:45:00Z',
         status: 'pending',
-        userEmail: 'buyer@example.com'
-      }
-    ]);
+        userEmail: 'buyer@example.com',
+      },
+    ])
 
     // Load initial deployment status
-    const savedStatus = localStorage.getItem('deployment_status');
+    const savedStatus = localStorage.getItem('deployment_status')
     if (savedStatus) {
-      setDeploymentStatus(JSON.parse(savedStatus));
+      setDeploymentStatus(JSON.parse(savedStatus))
     }
 
     // Listen for real-time deployment updates
     const cleanup = onDeploymentStatusUpdate((status) => {
-      setDeploymentStatus(status);
-    });
+      setDeploymentStatus(status)
+    })
 
-    return cleanup;
-  }, []);
+    return cleanup
+  }, [])
 
   const totalRevenue = revenueRecords
-    .filter(record => record.status === 'completed')
-    .reduce((sum, record) => sum + record.amount, 0);
+    .filter((record) => record.status === 'completed')
+    .reduce((sum, record) => sum + record.amount, 0)
 
   const handleApproveRecommendation = (recommendationId: string) => {
     // Implementation for approving recommendations
-    console.log('Approving recommendation:', recommendationId);
-  };
+    console.log('Approving recommendation:', recommendationId)
+  }
 
   const handleRejectRecommendation = (recommendationId: string) => {
     // Implementation for rejecting recommendations
-    console.log('Rejecting recommendation:', recommendationId);
-  };
+    console.log('Rejecting recommendation:', recommendationId)
+  }
 
   const handleCreateSubAdmin = () => {
     // Implementation for creating new sub-admin
-    console.log('Creating new sub-admin');
-  };
+    console.log('Creating new sub-admin')
+  }
 
   const exportCEOContact = () => {
     const ceoContact = {
@@ -172,21 +182,23 @@ export default function ApexAdminDashboard() {
       secondaryEmails: ['amaechi.u@gmail.com', 'ubadike,a@live.com'],
       phone: '+2349049837474',
       office: 'Executive Suite, DomisLink Headquarters',
-      location: 'Nigeria'
-    };
+      location: 'Nigeria',
+    }
 
-    const blob = new Blob([JSON.stringify(ceoContact, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'Amaechi_Ubadike_CEO_Contact.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    const blob = new Blob([JSON.stringify(ceoContact, null, 2)], {
+      type: 'application/json',
+    })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'Amaechi_Ubadike_CEO_Contact.json'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
 
-    alert('CEO contact information exported successfully!');
-  };
+    alert('CEO contact information exported successfully!')
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -196,8 +208,13 @@ export default function ApexAdminDashboard() {
           <div className="flex items-center space-x-3">
             <Crown className="h-8 w-8 text-yellow-600" />
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Amaechi Ubadike</h1>
-              <p className="text-gray-600">Chief Executive Officer & Founder - DomisLink International Services, Ltd</p>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Amaechi Ubadike
+              </h1>
+              <p className="text-gray-600">
+                Chief Executive Officer & Founder - DomisLink International
+                Services, Ltd
+              </p>
               <div className="flex items-center space-x-4 mt-1 text-sm text-gray-500">
                 <span>📧 ceo@domislink.com</span>
                 <span>📱 +2349049837474</span>
@@ -210,7 +227,10 @@ export default function ApexAdminDashboard() {
               <Building className="h-4 w-4 mr-1" />
               Founder
             </Badge>
-            <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+            <Badge
+              variant="secondary"
+              className="bg-yellow-100 text-yellow-800"
+            >
               <Shield className="h-4 w-4 mr-1" />
               CEO Access
             </Badge>
@@ -226,30 +246,42 @@ export default function ApexAdminDashboard() {
             <DollarSign className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${totalRevenue.toLocaleString()}</div>
+            <div className="text-2xl font-bold">
+              ${totalRevenue.toLocaleString()}
+            </div>
             <p className="text-xs text-gray-600">All-time platform earnings</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Sub-Admins</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Active Sub-Admins
+            </CardTitle>
             <Users className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{subAdmins.filter(admin => admin.status === 'active').length}</div>
+            <div className="text-2xl font-bold">
+              {subAdmins.filter((admin) => admin.status === 'active').length}
+            </div>
             <p className="text-xs text-gray-600">Managing platform sections</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Actions</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Pending Actions
+            </CardTitle>
             <BarChart3 className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{pendingRecommendations.length}</div>
-            <p className="text-xs text-gray-600">Recommendations awaiting approval</p>
+            <div className="text-2xl font-bold">
+              {pendingRecommendations.length}
+            </div>
+            <p className="text-xs text-gray-600">
+              Recommendations awaiting approval
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -269,12 +301,21 @@ export default function ApexAdminDashboard() {
           <CardContent>
             <div className="space-y-4">
               {subAdmins.map((admin) => (
-                <div key={admin.id} className="flex items-center justify-between p-3 border rounded-lg">
+                <div
+                  key={admin.id}
+                  className="flex items-center justify-between p-3 border rounded-lg"
+                >
                   <div>
                     <div className="font-medium">{admin.name}</div>
-                    <div className="text-sm text-gray-600">{admin.assignedPage}</div>
+                    <div className="text-sm text-gray-600">
+                      {admin.assignedPage}
+                    </div>
                     <div className="flex items-center space-x-2 mt-1">
-                      <Badge variant={admin.status === 'active' ? 'default' : 'secondary'}>
+                      <Badge
+                        variant={
+                          admin.status === 'active' ? 'default' : 'secondary'
+                        }
+                      >
                         {admin.status}
                       </Badge>
                       <span className="text-xs text-gray-500">
@@ -282,8 +323,8 @@ export default function ApexAdminDashboard() {
                       </span>
                     </div>
                   </div>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     className="bg-transparent"
                     onClick={() => setSelectedSubAdmin(admin)}
@@ -314,14 +355,25 @@ export default function ApexAdminDashboard() {
           <CardContent>
             <div className="space-y-3">
               {revenueRecords.map((record) => (
-                <div key={record.id} className="flex items-center justify-between p-3 border rounded-lg">
+                <div
+                  key={record.id}
+                  className="flex items-center justify-between p-3 border rounded-lg"
+                >
                   <div>
                     <div className="font-medium">{record.source}</div>
-                    <div className="text-sm text-gray-600">{record.userEmail}</div>
+                    <div className="text-sm text-gray-600">
+                      {record.userEmail}
+                    </div>
                   </div>
                   <div className="text-right">
-                    <div className="font-bold text-green-600">${record.amount}</div>
-                    <Badge variant={record.status === 'completed' ? 'default' : 'secondary'}>
+                    <div className="font-bold text-green-600">
+                      ${record.amount}
+                    </div>
+                    <Badge
+                      variant={
+                        record.status === 'completed' ? 'default' : 'secondary'
+                      }
+                    >
                       {record.status}
                     </Badge>
                   </div>
@@ -339,16 +391,20 @@ export default function ApexAdminDashboard() {
               CEO Code Push Engine
             </CardTitle>
             <CardDescription>
-              Deploy actual code changes using natural language. AI generates production-ready code instantly.
+              Deploy actual code changes using natural language. AI generates
+              production-ready code instantly.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-4 bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg border">
-                  <div className="font-medium mb-2">🎯 Natural Language Deployment</div>
+                  <div className="font-medium mb-2">
+                    🎯 Natural Language Deployment
+                  </div>
                   <p className="text-sm text-gray-600 mb-3">
-                    Describe what you want to build or change. AI generates and deploys the code.
+                    Describe what you want to build or change. AI generates and
+                    deploys the code.
                   </p>
                   <div className="space-y-2 text-xs">
                     <div className="flex items-center">
@@ -369,11 +425,12 @@ export default function ApexAdminDashboard() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="p-4 bg-gradient-to-br from-green-50 to-blue-50 rounded-lg border">
                   <div className="font-medium mb-2">🚀 Instant Execution</div>
                   <p className="text-sm text-gray-600 mb-3">
-                    CEO commands execute immediately with enterprise-grade deployment pipeline.
+                    CEO commands execute immediately with enterprise-grade
+                    deployment pipeline.
                   </p>
                   <div className="space-y-2 text-xs">
                     <div className="flex items-center">
@@ -395,7 +452,7 @@ export default function ApexAdminDashboard() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex space-x-2">
                 <Button className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
                   <Terminal className="h-4 w-4 mr-2" />
@@ -423,18 +480,24 @@ export default function ApexAdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className={`p-4 rounded-lg border ${
-                deploymentStatus.active 
-                  ? 'border-blue-200 bg-blue-50' 
-                  : 'border-gray-200 bg-gray-50'
-              }`}>
+              <div
+                className={`p-4 rounded-lg border ${
+                  deploymentStatus.active
+                    ? 'border-blue-200 bg-blue-50'
+                    : 'border-gray-200 bg-gray-50'
+                }`}
+              >
                 <div className="flex items-center justify-between mb-2">
                   <div className="font-medium">
-                    {deploymentStatus.active ? '🔄 Deployment in Progress' : '✅ System Ready'}
+                    {deploymentStatus.active
+                      ? '🔄 Deployment in Progress'
+                      : '✅ System Ready'}
                   </div>
                   {deploymentStatus.timestamp && (
                     <div className="text-sm text-gray-500">
-                      {new Date(deploymentStatus.timestamp).toLocaleTimeString()}
+                      {new Date(
+                        deploymentStatus.timestamp
+                      ).toLocaleTimeString()}
                     </div>
                   )}
                 </div>
@@ -443,14 +506,14 @@ export default function ApexAdminDashboard() {
                 </div>
                 {deploymentStatus.active && (
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
+                    <div
                       className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${deploymentStatus.progress}%` }}
                     ></div>
                   </div>
                 )}
               </div>
-              
+
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div className="text-center p-3 bg-green-50 rounded-lg">
                   <div className="font-bold text-green-600">12</div>
@@ -504,7 +567,7 @@ export default function ApexAdminDashboard() {
                   </div>
                 </div>
               </div>
-              
+
               {/* Secondary Emails */}
               <div className="p-3 bg-green-50 rounded-lg">
                 <div className="font-medium">Secondary Email Accounts</div>
@@ -513,7 +576,7 @@ export default function ApexAdminDashboard() {
                   <div>📧 ubadike,a@live.com</div>
                 </div>
               </div>
-              
+
               {/* Communication Channels */}
               <div className="p-3 bg-purple-50 rounded-lg">
                 <div className="font-medium">Communication Channels</div>
@@ -524,7 +587,7 @@ export default function ApexAdminDashboard() {
                   <div>• Investor Relations</div>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-3 gap-2">
                 <Button variant="outline" className="bg-transparent">
                   <Mail className="h-4 w-4 mr-2" />
@@ -534,7 +597,11 @@ export default function ApexAdminDashboard() {
                   <Phone className="h-4 w-4 mr-2" />
                   Call Now
                 </Button>
-                <Button variant="outline" className="bg-transparent" onClick={() => exportCEOContact()}>
+                <Button
+                  variant="outline"
+                  className="bg-transparent"
+                  onClick={() => exportCEOContact()}
+                >
                   <Download className="h-4 w-4 mr-2" />
                   Export
                 </Button>
@@ -558,19 +625,23 @@ export default function ApexAdminDashboard() {
             <div className="space-y-4">
               <div className="p-3 bg-blue-50 rounded-lg">
                 <div className="font-medium">Revenue Tracking</div>
-                <div className="text-sm text-gray-600">Real-time income monitoring</div>
+                <div className="text-sm text-gray-600">
+                  Real-time income monitoring
+                </div>
               </div>
               <div className="p-3 bg-green-50 rounded-lg">
                 <div className="font-medium">Receipt Automation</div>
-                <div className="text-sm text-gray-600">Email, WhatsApp, Telegram</div>
+                <div className="text-sm text-gray-600">
+                  Email, WhatsApp, Telegram
+                </div>
               </div>
               <div className="p-3 bg-purple-50 rounded-lg">
                 <div className="font-medium">Sponsor Notifications</div>
-                <div className="text-sm text-gray-600">Student progress updates</div>
+                <div className="text-sm text-gray-600">
+                  Student progress updates
+                </div>
               </div>
-              <Button className="w-full">
-                Configure AI Accountant
-              </Button>
+              <Button className="w-full">Configure AI Accountant</Button>
             </div>
           </CardContent>
         </Card>
@@ -579,5 +650,5 @@ export default function ApexAdminDashboard() {
       {/* Admin Chat Space */}
       <SmartChatSpace context="admin" />
     </div>
-  );
+  )
 }

@@ -2,29 +2,35 @@
  * Instrument Recurrency Training - Strict IFR proficiency maintenance
  * Meets FAA/EASA requirements for instrument currency
  */
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
-import { Progress } from '../ui/progress';
-import { 
-  Navigation, 
-  Clock, 
-  CheckCircle2, 
+import React, { useState } from 'react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../ui/card'
+import { Button } from '../ui/button'
+import { Badge } from '../ui/badge'
+import { Progress } from '../ui/progress'
+import {
+  Navigation,
+  Clock,
+  CheckCircle2,
   AlertTriangle,
   BarChart3,
   Map,
   Cloud,
-  Eye
-} from 'lucide-react';
+  Eye,
+} from 'lucide-react'
 
 interface RecurrencyRequirement {
-  task: string;
-  required: number;
-  completed: number;
-  lastCompleted: string;
-  dueDate: string;
-  status: 'current' | 'due' | 'overdue';
+  task: string
+  required: number
+  completed: number
+  lastCompleted: string
+  dueDate: string
+  status: 'current' | 'due' | 'overdue'
 }
 
 export const InstrumentRecurrency: React.FC = () => {
@@ -35,7 +41,7 @@ export const InstrumentRecurrency: React.FC = () => {
       completed: 6,
       lastCompleted: '2024-01-15',
       dueDate: '2024-07-15',
-      status: 'current'
+      status: 'current',
     },
     {
       task: 'Precision Approaches',
@@ -43,7 +49,7 @@ export const InstrumentRecurrency: React.FC = () => {
       completed: 4,
       lastCompleted: '2024-01-10',
       dueDate: '2024-07-10',
-      status: 'due'
+      status: 'due',
     },
     {
       task: 'Non-precision Approaches',
@@ -51,7 +57,7 @@ export const InstrumentRecurrency: React.FC = () => {
       completed: 6,
       lastCompleted: '2024-01-12',
       dueDate: '2024-07-12',
-      status: 'current'
+      status: 'current',
     },
     {
       task: 'Tracking & Intercepting',
@@ -59,7 +65,7 @@ export const InstrumentRecurrency: React.FC = () => {
       completed: 3,
       lastCompleted: '2024-01-08',
       dueDate: '2024-07-08',
-      status: 'overdue'
+      status: 'overdue',
     },
     {
       task: 'Partial Panel',
@@ -67,7 +73,7 @@ export const InstrumentRecurrency: React.FC = () => {
       completed: 2,
       lastCompleted: '2024-01-20',
       dueDate: '2024-07-20',
-      status: 'current'
+      status: 'current',
     },
     {
       task: 'Unusual Attitudes',
@@ -75,35 +81,45 @@ export const InstrumentRecurrency: React.FC = () => {
       completed: 1,
       lastCompleted: '2024-01-05',
       dueDate: '2024-07-05',
-      status: 'overdue'
-    }
-  ]);
+      status: 'overdue',
+    },
+  ])
 
-  const [aiInstructorActive, setAiInstructorActive] = useState(true);
-  const [currentSession, setCurrentSession] = useState<string | null>(null);
+  const [aiInstructorActive, setAiInstructorActive] = useState(true)
+  const [currentSession, setCurrentSession] = useState<string | null>(null)
 
   const calculateOverallProgress = () => {
-    const totalRequired = requirements.reduce((sum, req) => sum + req.required, 0);
-    const totalCompleted = requirements.reduce((sum, req) => sum + req.completed, 0);
-    return (totalCompleted / totalRequired) * 100;
-  };
+    const totalRequired = requirements.reduce(
+      (sum, req) => sum + req.required,
+      0
+    )
+    const totalCompleted = requirements.reduce(
+      (sum, req) => sum + req.completed,
+      0
+    )
+    return (totalCompleted / totalRequired) * 100
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'current': return 'bg-green-500/20 text-green-300 border-green-400';
-      case 'due': return 'bg-amber-500/20 text-amber-300 border-amber-400';
-      case 'overdue': return 'bg-red-500/20 text-red-300 border-red-400';
-      default: return 'bg-slate-500/20 text-slate-300 border-slate-400';
+      case 'current':
+        return 'bg-green-500/20 text-green-300 border-green-400'
+      case 'due':
+        return 'bg-amber-500/20 text-amber-300 border-amber-400'
+      case 'overdue':
+        return 'bg-red-500/20 text-red-300 border-red-400'
+      default:
+        return 'bg-slate-500/20 text-slate-300 border-slate-400'
     }
-  };
+  }
 
   const startTrainingSession = (task: string) => {
-    setCurrentSession(task);
+    setCurrentSession(task)
     // AI Instructor would begin briefing here
-    console.log(`Starting ${task} training session with AI Instructor`);
-  };
+    console.log(`Starting ${task} training session with AI Instructor`)
+  }
 
-  const overallProgress = calculateOverallProgress();
+  const overallProgress = calculateOverallProgress()
 
   return (
     <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
@@ -116,17 +132,21 @@ export const InstrumentRecurrency: React.FC = () => {
           FAA 14 CFR §61.57 & EASA FCL.065 Compliance Tracking
         </CardDescription>
       </CardHeader>
-      
+
       <CardContent className="space-y-6">
         {/* Compliance Status */}
         <div className="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
           <div className="flex items-center justify-between mb-3">
             <div className="text-white font-semibold">IFR Currency Status</div>
-            <Badge className={
-              overallProgress >= 100 ? 'bg-green-500/20 text-green-300 border-green-400' :
-              overallProgress >= 80 ? 'bg-amber-500/20 text-amber-300 border-amber-400' :
-              'bg-red-500/20 text-red-300 border-red-400'
-            }>
+            <Badge
+              className={
+                overallProgress >= 100
+                  ? 'bg-green-500/20 text-green-300 border-green-400'
+                  : overallProgress >= 80
+                    ? 'bg-amber-500/20 text-amber-300 border-amber-400'
+                    : 'bg-red-500/20 text-red-300 border-red-400'
+              }
+            >
               {overallProgress >= 100 ? 'CURRENT' : 'NOT CURRENT'}
             </Badge>
           </div>
@@ -141,10 +161,13 @@ export const InstrumentRecurrency: React.FC = () => {
         <div className="bg-amber-500/10 border border-amber-400/30 rounded-lg p-3">
           <div className="flex items-center">
             <AlertTriangle className="h-5 w-5 text-amber-400 mr-2" />
-            <div className="text-amber-300 font-semibold">AI Instructor Required</div>
+            <div className="text-amber-300 font-semibold">
+              AI Instructor Required
+            </div>
           </div>
           <p className="text-amber-200 text-sm mt-1">
-            Instrument training requires AI instructor supervision. Instructor cannot be disabled during IFR sessions.
+            Instrument training requires AI instructor supervision. Instructor
+            cannot be disabled during IFR sessions.
           </p>
         </div>
 
@@ -154,13 +177,20 @@ export const InstrumentRecurrency: React.FC = () => {
             <BarChart3 className="h-4 w-4 mr-2 text-blue-400" />
             Training Requirements (6-Month Cycle)
           </h4>
-          
+
           {requirements.map((requirement, index) => (
-            <div key={index} className="border border-slate-600 rounded-lg p-3 hover:border-blue-400/50 transition-colors">
+            <div
+              key={index}
+              className="border border-slate-600 rounded-lg p-3 hover:border-blue-400/50 transition-colors"
+            >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center">
-                  <div className="text-white font-medium">{requirement.task}</div>
-                  <Badge className={`ml-2 ${getStatusColor(requirement.status)}`}>
+                  <div className="text-white font-medium">
+                    {requirement.task}
+                  </div>
+                  <Badge
+                    className={`ml-2 ${getStatusColor(requirement.status)}`}
+                  >
                     {requirement.status.toUpperCase()}
                   </Badge>
                 </div>
@@ -168,19 +198,19 @@ export const InstrumentRecurrency: React.FC = () => {
                   {requirement.completed}/{requirement.required}
                 </div>
               </div>
-              
-              <Progress 
-                value={(requirement.completed / requirement.required) * 100} 
+
+              <Progress
+                value={(requirement.completed / requirement.required) * 100}
                 className="h-1 mb-2"
               />
-              
+
               <div className="flex items-center justify-between text-xs text-slate-400">
                 <div>Last: {requirement.lastCompleted}</div>
                 <div>Due: {requirement.dueDate}</div>
               </div>
-              
-              <Button 
-                size="sm" 
+
+              <Button
+                size="sm"
                 className="w-full mt-2 bg-blue-600 hover:bg-blue-700"
                 onClick={() => startTrainingSession(requirement.task)}
               >
@@ -221,11 +251,12 @@ export const InstrumentRecurrency: React.FC = () => {
             </div>
             <div className="text-white mt-1">{currentSession}</div>
             <div className="text-blue-200 text-sm mt-2">
-              AI Instructor is monitoring your performance and will provide real-time feedback.
+              AI Instructor is monitoring your performance and will provide
+              real-time feedback.
             </div>
           </div>
         )}
       </CardContent>
     </Card>
-  );
-};
+  )
+}
