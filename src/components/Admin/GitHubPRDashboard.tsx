@@ -3,7 +3,7 @@
  * Lists and manages open pull requests with advanced filtering and sorting
  */
 
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -28,6 +28,8 @@ import {
 import githubAPI, { PullRequest, GitHubConfig } from '../../utils/githubApiService';
 import { Alert, AlertDescription } from '../ui/alert';
 
+type PullRequestSort = 'created' | 'updated' | 'popularity';
+
 export default function GitHubPRDashboard() {
   const [pullRequests, setPullRequests] = useState<PullRequest[]>([]);
   const [filteredPRs, setFilteredPRs] = useState<PullRequest[]>([]);
@@ -37,40 +39,37 @@ export default function GitHubPRDashboard() {
   const [filterAuthor, setFilterAuthor] = useState('');
   const [filterLabel, setFilterLabel] = useState('');
   const [showDrafts, setShowDrafts] = useState(true);
-  const [sortBy, setSortBy] = useState<'created' | 'updated' | 'popularity'>('updated');
+  const [sortBy, setSortBy] = useState<PullRequestSort>('updated');
   const [showConfig, setShowConfig] = useState(false);
   const [config, setConfig] = useState<GitHubConfig>({
     owner: 'amaechiu-del',
     repo: 'domislink-new',
-    token: ''
   });
 
-  // Load PRs on component mount
   useEffect(() => {
-    loadPullRequests();
-    
-    // Load saved configuration
     const savedConfig = localStorage.getItem('github_config');
     if (savedConfig) {
       try {
-        setConfig(JSON.parse(savedConfig));
-      } catch (e) {
-        console.error('Failed to parse config:', e);
+        setConfig(JSON.parse(savedConfig) as GitHubConfig);
+      } catch (error) {
+        console.error('Failed to parse config:', error);
       }
     }
-  }, []);
+
+    void loadPullRequests('updated');
+  }, [loadPullRequests]);
 
   // Apply filters when PRs or filter criteria change
   useEffect(() => {
     applyFilters();
   }, [pullRequests, searchText, filterAuthor, filterLabel, showDrafts]);
 
-  const loadPullRequests = async () => {
+  const loadPullRequests = useCallback(async (selectedSort: PullRequestSort) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const prs = await githubAPI.fetchOpenPullRequests('open', sortBy, 'desc');
+      const prs = await githubAPI.fetchOpenPullRequests('open', selectedSort, 'desc');
       setPullRequests(prs);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch pull requests');
@@ -78,7 +77,7 @@ export default function GitHubPRDashboard() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   const applyFilters = () => {
     let filtered = githubAPI.filterPullRequests(pullRequests, {
@@ -92,9 +91,20 @@ export default function GitHubPRDashboard() {
   };
 
   const saveConfiguration = () => {
-    githubAPI.saveConfig(config);
+    const normalizedConfig = {
+      owner: config.owner.trim(),
+      repo: config.repo.trim(),
+    };
+
+    if (!normalizedConfig.owner || !normalizedConfig.repo) {
+      setError('Repository owner and name are required.');
+      return;
+    }
+
+    githubAPI.saveConfig(normalizedConfig);
+    setConfig(normalizedConfig);
     setShowConfig(false);
-    loadPullRequests();
+    void loadPullRequests(sortBy);
   };
 
   const statistics = githubAPI.getStatistics(filteredPRs);
@@ -158,7 +168,7 @@ export default function GitHubPRDashboard() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={loadPullRequests}
+                onClick={() => void loadPullRequests(sortBy)}
                 disabled={isLoading}
               >
                 <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
@@ -189,20 +199,9 @@ export default function GitHubPRDashboard() {
                   />
                 </div>
               </div>
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  GitHub Token (Optional - for private repos and higher rate limits)
-                </label>
-                <Input
-                  type="password"
-                  value={config.token}
-                  onChange={(e) => setConfig({ ...config, token: e.target.value })}
-                  placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Create a token at: https://github.com/settings/tokens
-                </p>
-              </div>
+              <p className="text-xs text-gray-500">
+                This dashboard supports public repositories. Use a server-side GitHub App or proxy for private repository access.
+              </p>
               <Button onClick={saveConfiguration} className="w-full">
                 Save Configuration
               </Button>
@@ -298,8 +297,9 @@ export default function GitHubPRDashboard() {
               <select
                 value={sortBy}
                 onChange={(e) => {
-                  setSortBy(e.target.value as 'created' | 'updated' | 'popularity');
-                  loadPullRequests();
+                  const selectedSort = e.target.value as PullRequestSort;
+                  setSortBy(selectedSort);
+                  void loadPullRequests(selectedSort);
                 }}
                 className="w-full h-10 px-3 border rounded-md"
               >
