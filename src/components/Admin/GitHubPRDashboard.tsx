@@ -57,7 +57,7 @@ export default function GitHubPRDashboard() {
     }
 
     void loadPullRequests('updated');
-  }, [loadPullRequests]);
+  }, []);
 
   // Apply filters when PRs or filter criteria change
   useEffect(() => {
