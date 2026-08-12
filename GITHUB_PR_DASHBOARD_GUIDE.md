@@ -12,10 +12,7 @@ Navigate to: `/#/github-pr` in your browser
 Click the **Settings** button to configure:
 - **Repository Owner**: GitHub username or organization name
 - **Repository Name**: Name of the repository
-- **GitHub Token** (Optional): Personal access token for:
-  - Higher API rate limits (60/hour unauthenticated → 5000/hour authenticated)
-  - Access to private repositories
-  - Creating tokens: https://github.com/settings/tokens
+- **Public repositories only**: This client dashboard does not accept GitHub tokens. Use a server-side GitHub App or proxy for private repository access.
 
 ### 2. Statistics Dashboard
 View real-time metrics:
@@ -52,9 +49,8 @@ Click **Refresh** to fetch the latest PR data from GitHub
 ## Tips
 
 ### Rate Limits
-- **Without Token**: 60 requests per hour
-- **With Token**: 5000 requests per hour
-- If you hit the rate limit, add a GitHub token in settings
+- GitHub applies unauthenticated API limits to this browser-based dashboard.
+- Refresh only when needed and use filtering to reduce unnecessary requests.
 
 ### Best Practices
 1. **Use Tokens for Private Repos**: Authentication is required for private repositories
@@ -72,13 +68,12 @@ Click **Refresh** to fetch the latest PR data from GitHub
 - Invalid repository owner/name
 - Rate limit exceeded
 - Network connectivity issues
-- Private repository without authentication
+- Private repository
 
 **Solutions**:
 - Verify repository owner and name are correct
-- Add a GitHub token in settings
 - Check your internet connection
-- Ensure you have access to the repository
+- Use a server-side GitHub App or proxy for private repositories
 
 ### No PRs Displayed
 **Possible reasons**:
@@ -92,9 +87,9 @@ The dashboard uses GitHub's REST API v3:
 - Documentation: https://docs.github.com/en/rest/pulls/pulls
 
 ## Security
-- GitHub tokens are stored in browser localStorage only
-- Tokens are never sent to any server except GitHub's official API
-- Use tokens with minimal required permissions (public_repo scope)
+- The dashboard does not collect or store GitHub credentials.
+- It uses unauthenticated GitHub API requests and is intended for public repositories.
+- Access private repositories only through a server-side integration with least-privilege credentials.
 
 ## Future Features (Roadmap)
 - Real-time updates via webhooks
