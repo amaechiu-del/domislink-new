@@ -39,7 +39,6 @@ export interface PullRequest {
 export interface GitHubConfig {
   owner: string;
   repo: string;
-  token?: string;
 }
 
 class GitHubAPIService {
@@ -72,8 +71,7 @@ class GitHubAPIService {
     // Default configuration
     return {
       owner: 'amaechiu-del',
-      repo: 'domislink-new',
-      token: '' // Token should be set by user
+      repo: 'domislink-new'
     };
   }
 
@@ -86,20 +84,12 @@ class GitHubAPIService {
   }
 
   /**
-   * Build request headers with authentication if token is available
+   * Build headers for unauthenticated requests to public repositories.
    */
   private getHeaders(): HeadersInit {
-    const config = this.getConfig();
-    const headers: HeadersInit = {
-      'Accept': 'application/vnd.github.v3+json',
-      'Content-Type': 'application/json',
+    return {
+      Accept: 'application/vnd.github.v3+json',
     };
-
-    if (config.token) {
-      headers['Authorization'] = `token ${config.token}`;
-    }
-
-    return headers;
   }
 
   /**
