@@ -73,6 +73,7 @@
             Explore Project Details
         </a>
     </footer>
+
 </div>
 
 <!-- Firebase SDK and Gemini API Logic -->

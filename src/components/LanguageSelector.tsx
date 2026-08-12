@@ -2,14 +2,14 @@
  * Language Selector Component
  * Provides language switching with geolocation-based auto-detection
  */
-import React from 'react';
-import { Button } from './ui/button';
-import { Globe, ChevronDown } from 'lucide-react';
-import { detectUserLanguage } from '../utils/languageDetection';
+import React from 'react'
+import { Button } from './ui/button'
+import { Globe, ChevronDown } from 'lucide-react'
+import { detectUserLanguage } from '../utils/languageDetection'
 
 interface LanguageSelectorProps {
-  currentLanguage: string;
-  onLanguageChange: (language: string) => void;
+  currentLanguage: string
+  onLanguageChange: (language: string) => void
 }
 
 const languages = [
@@ -18,16 +18,20 @@ const languages = [
   { code: 'es', name: 'Spanish', nativeName: 'Español' },
   { code: 'ar', name: 'Arabic', nativeName: 'العربية' },
   { code: 'pt', name: 'Portuguese', nativeName: 'Português' },
-  { code: 'sw', name: 'Swahili', nativeName: 'Kiswahili' }
-];
+  { code: 'sw', name: 'Swahili', nativeName: 'Kiswahili' },
+]
 
-export default function LanguageSelector({ currentLanguage, onLanguageChange }: LanguageSelectorProps) {
-  const currentLang = languages.find(lang => lang.code === currentLanguage) || languages[0];
+export default function LanguageSelector({
+  currentLanguage,
+  onLanguageChange,
+}: LanguageSelectorProps) {
+  const currentLang =
+    languages.find((lang) => lang.code === currentLanguage) || languages[0]
 
   const handleAutoDetect = () => {
-    const { language } = detectUserLanguage();
-    onLanguageChange(language);
-  };
+    const { language } = detectUserLanguage()
+    onLanguageChange(language)
+  }
 
   return (
     <div className="flex items-center space-x-2">
@@ -40,7 +44,7 @@ export default function LanguageSelector({ currentLanguage, onLanguageChange }: 
         <Globe className="h-4 w-4 mr-2" />
         Auto Detect
       </Button>
-      
+
       <select
         value={currentLanguage}
         onChange={(e) => onLanguageChange(e.target.value)}
@@ -53,5 +57,5 @@ export default function LanguageSelector({ currentLanguage, onLanguageChange }: 
         ))}
       </select>
     </div>
-  );
+  )
 }

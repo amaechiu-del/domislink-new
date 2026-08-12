@@ -2,87 +2,98 @@
  * Unity Integration Component for 3D Simulation Embedding
  * Framework for embedding Unity WebGL builds and external simulators
  */
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
-import { 
-  Play, 
-  Pause, 
-  RotateCcw, 
-  Download, 
+import React, { useState } from 'react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../ui/card'
+import { Button } from '../ui/button'
+import { Badge } from '../ui/badge'
+import {
+  Play,
+  Pause,
+  RotateCcw,
+  Download,
   Settings,
   Monitor,
   Gamepad2,
-  VR
-} from 'lucide-react';
+  VR,
+} from 'lucide-react'
 
 interface UnityIntegrationProps {
-  language?: string;
+  language?: string
 }
 
-export default function UnityIntegration({ language = 'en' }: UnityIntegrationProps) {
-  const [isSimulationRunning, setIsSimulationRunning] = useState(false);
-  const [simulationQuality, setSimulationQuality] = useState<'low' | 'medium' | 'high'>('medium');
+export default function UnityIntegration({
+  language = 'en',
+}: UnityIntegrationProps) {
+  const [isSimulationRunning, setIsSimulationRunning] = useState(false)
+  const [simulationQuality, setSimulationQuality] = useState<
+    'low' | 'medium' | 'high'
+  >('medium')
 
   const content = {
     en: {
-      title: "3D Simulation Integration",
-      subtitle: "Embed Unity WebGL simulations and external training modules",
+      title: '3D Simulation Integration',
+      subtitle: 'Embed Unity WebGL simulations and external training modules',
       status: {
-        ready: "Ready",
-        loading: "Loading",
-        error: "Error"
+        ready: 'Ready',
+        loading: 'Loading',
+        error: 'Error',
       },
       controls: {
-        start: "Start Simulation",
-        stop: "Stop Simulation",
-        reset: "Reset",
-        download: "Download Simulator",
-        settings: "Settings"
+        start: 'Start Simulation',
+        stop: 'Stop Simulation',
+        reset: 'Reset',
+        download: 'Download Simulator',
+        settings: 'Settings',
       },
       features: [
-        "Real-time 3D rendering",
-        "Physics-based vehicle simulation",
-        "Multi-platform compatibility",
-        "VR/AR ready",
-        "Performance optimization"
-      ]
+        'Real-time 3D rendering',
+        'Physics-based vehicle simulation',
+        'Multi-platform compatibility',
+        'VR/AR ready',
+        'Performance optimization',
+      ],
     },
     fr: {
-      title: "Intégration Simulation 3D",
-      subtitle: "Intégrez des simulations Unity WebGL et modules de formation externes",
+      title: 'Intégration Simulation 3D',
+      subtitle:
+        'Intégrez des simulations Unity WebGL et modules de formation externes',
       status: {
-        ready: "Prêt",
-        loading: "Chargement",
-        error: "Erreur"
+        ready: 'Prêt',
+        loading: 'Chargement',
+        error: 'Erreur',
       },
       controls: {
-        start: "Démarrer Simulation",
-        stop: "Arrêter Simulation",
-        reset: "Réinitialiser",
-        download: "Télécharger Simulateur",
-        settings: "Paramètres"
+        start: 'Démarrer Simulation',
+        stop: 'Arrêter Simulation',
+        reset: 'Réinitialiser',
+        download: 'Télécharger Simulateur',
+        settings: 'Paramètres',
       },
       features: [
-        "Rendu 3D en temps réel",
-        "Simulation véhicule basée physique",
-        "Compatibilité multiplateforme",
-        "Prêt VR/AR",
-        "Optimisation performance"
-      ]
-    }
-  };
+        'Rendu 3D en temps réel',
+        'Simulation véhicule basée physique',
+        'Compatibilité multiplateforme',
+        'Prêt VR/AR',
+        'Optimisation performance',
+      ],
+    },
+  }
 
-  const currentContent = content[language as keyof typeof content] || content.en;
+  const currentContent = content[language as keyof typeof content] || content.en
 
   const toggleSimulation = () => {
-    setIsSimulationRunning(!isSimulationRunning);
-  };
+    setIsSimulationRunning(!isSimulationRunning)
+  }
 
   const handleQualityChange = (quality: 'low' | 'medium' | 'high') => {
-    setSimulationQuality(quality);
-  };
+    setSimulationQuality(quality)
+  }
 
   return (
     <Card className="w-full">
@@ -113,8 +124,13 @@ export default function UnityIntegration({ language = 'en' }: UnityIntegrationPr
           {/* Features Grid */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {currentContent.features.map((feature, index) => (
-              <div key={index} className="text-center p-3 bg-blue-50 rounded-lg">
-                <div className="text-sm text-blue-700 font-medium">{feature}</div>
+              <div
+                key={index}
+                className="text-center p-3 bg-blue-50 rounded-lg"
+              >
+                <div className="text-sm text-blue-700 font-medium">
+                  {feature}
+                </div>
               </div>
             ))}
           </div>
@@ -123,7 +139,9 @@ export default function UnityIntegration({ language = 'en' }: UnityIntegrationPr
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Simulation Controls */}
             <div className="space-y-4">
-              <h4 className="font-semibold text-gray-900">Simulation Controls</h4>
+              <h4 className="font-semibold text-gray-900">
+                Simulation Controls
+              </h4>
               <div className="flex space-x-3">
                 <Button
                   onClick={toggleSimulation}
@@ -155,7 +173,9 @@ export default function UnityIntegration({ language = 'en' }: UnityIntegrationPr
                 {['low', 'medium', 'high'].map((quality) => (
                   <Button
                     key={quality}
-                    variant={simulationQuality === quality ? 'default' : 'outline'}
+                    variant={
+                      simulationQuality === quality ? 'default' : 'outline'
+                    }
                     className="flex-1 bg-transparent capitalize"
                     onClick={() => handleQualityChange(quality as any)}
                   >
@@ -188,7 +208,9 @@ export default function UnityIntegration({ language = 'en' }: UnityIntegrationPr
 
           {/* Integration Status */}
           <div className="bg-blue-50 p-4 rounded-lg">
-            <h5 className="font-semibold text-blue-900 mb-2">Integration Status</h5>
+            <h5 className="font-semibold text-blue-900 mb-2">
+              Integration Status
+            </h5>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
               <div>
                 <div className="text-blue-700">Unity WebGL</div>
@@ -211,5 +233,5 @@ export default function UnityIntegration({ language = 'en' }: UnityIntegrationPr
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

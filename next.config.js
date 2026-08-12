@@ -11,6 +11,6 @@ const nextConfig = {
   env: {
     CUSTOM_API_URL: process.env.CUSTOM_API_URL, // Example environment variable
   },
-};
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig
